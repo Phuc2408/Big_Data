@@ -5,7 +5,7 @@ from kafka import KafkaProducer
 # --- Cấu hình ---
 KAFKA_BOOTSTRAP_SERVERS = "localhost:9092"
 KAFKA_TOPIC = "text-comments"
-INPUT_FILE = "E:\\Big_Data\\input_for_kafka.json" # File input chứa dữ liệu bình luận dạng JSON
+INPUT_FILE = "E:\\Big_Data\\input_for_kafka.json" 
 
 # Tạo một Kafka Producer
 producer = KafkaProducer(
@@ -18,16 +18,13 @@ print(f"Bắt đầu gửi dữ liệu từ '{INPUT_FILE}' đến topic '{KAFKA_
 # Đọc toàn bộ nội dung file và parse JSON một lần
 try:
     with open(INPUT_FILE, 'r', encoding='utf-8') as f:
-        # Đọc toàn bộ file vào một chuỗi
         json_content = f.read()
-        # Parse chuỗi JSON thành một list các dictionary
         comments_data = json.loads(json_content)
     
     # Lặp qua từng đối tượng trong list và gửi lên Kafka
     for comment_data in comments_data:
         print(f"Đang gửi: {comment_data}")
         producer.send(KAFKA_TOPIC, value=comment_data)
-        # Chờ 2 giây để giả lập dữ liệu đến từ từ
         time.sleep(2) 
 
 except FileNotFoundError:
